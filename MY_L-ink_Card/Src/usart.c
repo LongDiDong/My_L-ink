@@ -22,6 +22,9 @@
 
 /* USER CODE BEGIN 0 */
 
+unsigned char UART1_Rx_flg = 0;                   //USART1接收完成标志
+unsigned int  UART1_Rx_cnt = 0;                   //USART1接受数据计数器
+unsigned char UART1_temp[REC_LENGTH] = {0};       //USART1接收数据缓存
 /* USER CODE END 0 */
 
 UART_HandleTypeDef huart1;
@@ -45,7 +48,7 @@ void MX_USART1_UART_Init(void)
   {
     Error_Handler();
   }
-
+  HAL_UART_Receive_IT(&huart1,(uint8_t *)UART1_temp,REC_LENGTH); //开启串口中断
 }
 
 void HAL_UART_MspInit(UART_HandleTypeDef* uartHandle)
@@ -73,7 +76,7 @@ void HAL_UART_MspInit(UART_HandleTypeDef* uartHandle)
     HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
 
   /* USER CODE BEGIN USART1_MspInit 1 */
-
+   
   /* USER CODE END USART1_MspInit 1 */
   }
 }

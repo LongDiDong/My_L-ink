@@ -1,12 +1,12 @@
 /**
   ******************************************************************************
-  * File Name          : USART.h
+  * File Name          : ADC.h
   * Description        : This file provides code for the configuration
-  *                      of the USART instances.
+  *                      of the ADC instances.
   ******************************************************************************
   * @attention
   *
-  * <h2><center>&copy; Copyright (c) 2020 STMicroelectronics.
+  * <h2><center>&copy; Copyright (c) 2024 STMicroelectronics.
   * All rights reserved.</center></h2>
   *
   * This software component is licensed by ST under Ultimate Liberty license
@@ -17,8 +17,8 @@
   ******************************************************************************
   */
 /* Define to prevent recursive inclusion -------------------------------------*/
-#ifndef __usart_H
-#define __usart_H
+#ifndef __adc_H
+#define __adc_H
 #ifdef __cplusplus
  extern "C" {
 #endif
@@ -30,27 +30,22 @@
 
 /* USER CODE END Includes */
 
-extern UART_HandleTypeDef huart1;
+extern ADC_HandleTypeDef hadc;
 
 /* USER CODE BEGIN Private defines */
-#define REC_LENGTH  1
-#define MAX_REC_LENGTH  1024 
- 
+
 /* USER CODE END Private defines */
 
-void MX_USART1_UART_Init(void);
+void MX_ADC_Init(void);
 
 /* USER CODE BEGIN Prototypes */
 
-extern unsigned char UART1_Rx_flg ;
-extern unsigned int  UART1_Rx_cnt ;
-extern unsigned char UART1_temp[REC_LENGTH];
 /* USER CODE END Prototypes */
 
 #ifdef __cplusplus
 }
 #endif
-#endif /*__ usart_H */
+#endif /*__ adc_H */
 
 /**
   * @}

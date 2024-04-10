@@ -1,103 +1,31 @@
-/*****************************************************************************
-* | File      	:   DEV_Config.h
-* | Author      :   Waveshare team
-* | Function    :   Hardware underlying interface
-* | Info        :
-*                Used to shield the underlying layers of each master
-*                and enhance portability
-*----------------
-* |	This version:   V2.0
-* | Date        :   2018-10-30
-* | Info        :
-* 1.add:
-*   UBYTE\UWORD\UDOUBLE
-* 2.Change:
-*   EPD_RST -> EPD_RST_PIN
-*   EPD_DC -> EPD_DC_PIN
-*   EPD_CS -> EPD_CS_PIN
-*   EPD_BUSY -> EPD_BUSY_PIN
-* 3.Remote:
-*   EPD_RST_1\EPD_RST_0
-*   EPD_DC_1\EPD_DC_0
-*   EPD_CS_1\EPD_CS_0
-*   EPD_BUSY_1\EPD_BUSY_0
-* 3.add:
-*   #define DEV_Digital_Write(_pin, _value) bcm2835_gpio_write(_pin, _value)
-*   #define DEV_Digital_Read(_pin) bcm2835_gpio_lev(_pin)
-*   #define DEV_SPI_WriteByte(__value) bcm2835_spi_transfer(__value)
-#
-# Permission is hereby granted, free of charge, to any person obtaining a copy
-# of this software and associated documnetation files (the "Software"), to deal
-# in the Software without restriction, including without limitation the rights
-# to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-# copies of the Software, and to permit persons to  whom the Software is
-# furished to do so, subject to the following conditions:
-#
-# The above copyright notice and this permission notice shall be included in
-# all copies or substantial portions of the Software.
-#
-# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-# IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-# FITNESS OR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-# AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-# LIABILITY WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-# OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
-# THE SOFTWARE.
-#
-******************************************************************************/
-#ifndef _DEV_CONFIG_H_
-#define _DEV_CONFIG_H_
+#ifndef _DISPLAY_EPD_W21_CONFIG_H_
+#define _DISPLAY_EPD_W21_CONFIG_H_
 
-#include "main.h"
-//#include "stm32f1xx_hal.h"
-//#include "stm32f1xx_hal_gpio.h"
-#include <stdint.h>
-#include <stdio.h>
+#include "epd_w21.h"
 
-/**
- * data
-**/
-#define UBYTE   uint8_t
-#define UWORD   uint16_t
-#define UDOUBLE uint32_t
-
-/**
- * e-Paper GPIO
-**/
-#define EPD_RST_PIN     INK_RST_GPIO_Port, INK_RST_Pin
-#define EPD_DC_PIN      INK_DC_GPIO_Port, INK_DC_Pin
-#define EPD_CS_PIN      INK_CS_GPIO_Port, INK_CS_Pin
-#define EPD_BUSY_PIN    INK_IS_BUSY_GPIO_Port, INK_IS_BUSY_Pin
+#define xDot 200
+#define yDot 200
 
 
-#define EPD_W21_MOSI_0    HAL_GPIO_WritePin(GPIOA,GPIO_PIN_5,GPIO_PIN_RESET)
-#define EPD_W21_MOSI_1    HAL_GPIO_WritePin(GPIOA,GPIO_PIN_5,GPIO_PIN_SET)
+unsigned char GDOControl[] = {0x12}; //for 1.54inch
+unsigned char softStart[] = {0x01, 0xc7, 0x00, 0x00};
+unsigned char ramBypass[] = {0x21, 0x8f};        // Display update
+unsigned char MASequency[] = {0x22, 0xf0};        // clock
+unsigned char GDVol[] = {0x03, 0x66};    // Gate voltage +18V/-18V
+unsigned char SDVol[] = {0x04, 0x04};    // Source voltage +12V/-12V
+unsigned char VCOMVol[] = {0x2c, 0x78};    // VCOM 7c
+unsigned char boostERFB[] = {0xf0, 0x1f};    // Source voltage +15V/-15V
+unsigned char dummyLine[] = {0x11, 0x01};    // 4 dummy line per gate
+unsigned char gateTime[] = {0x44, 0x00,0x18};    // 2us per line
+unsigned char borderWavefrom[] = {0x3c, 0x33};    // Border
+unsigned char ramDataEntryMode[] = {0x45, 0xc7,0x00,0x00,0x00};    // Ram data entry mode
+unsigned char border[]={0x3c,0x01};
+unsigned char rbits[]={0x18,0x80};
+unsigned char loadtemp[]={0x22,0xb1};
 
-#define EPD_W21_CLK_0    HAL_GPIO_WritePin(GPIOA,GPIO_PIN_6,GPIO_PIN_RESET)
-#define EPD_W21_CLK_1    HAL_GPIO_WritePin(GPIOA,GPIO_PIN_6,GPIO_PIN_SET)
+unsigned char setx[]={0x4E,0x00};
+unsigned char sety[]={0x4f,0xc7,0x00};
 
-#define EPD_W21_CS_0    HAL_GPIO_WritePin(GPIOA,GPIO_PIN_7,GPIO_PIN_RESET)
-#define EPD_W21_CS_1    HAL_GPIO_WritePin(GPIOA,GPIO_PIN_7,GPIO_PIN_SET)
 
-#define EPD_W21_DC_0    HAL_GPIO_WritePin(GPIOB,GPIO_PIN_0,GPIO_PIN_RESET)
-#define EPD_W21_DC_1    HAL_GPIO_WritePin(GPIOB,GPIO_PIN_0,GPIO_PIN_SET)
-
-#define EPD_W21_RST_0    HAL_GPIO_WritePin(GPIOB,GPIO_PIN_1,GPIO_PIN_RESET)
-#define EPD_W21_RST_1    HAL_GPIO_WritePin(GPIOB,GPIO_PIN_1,GPIO_PIN_SET)
-
-/**
- * GPIO read and write
-**/
-#define DEV_Digital_Write(_pin, _value) HAL_GPIO_WritePin(_pin, _value == 0? GPIO_PIN_RESET:GPIO_PIN_SET)
-#define DEV_Digital_Read(_pin) HAL_GPIO_ReadPin(_pin)
-
-/**
- * delay x ms
-**/
-#define DEV_Delay_ms(__xms) HAL_Delay(__xms);
-
-void DEV_SPI_WriteByte(UBYTE value);
-
-int DEV_Module_Init(void);
-void DEV_Module_Exit(void);
 #endif
+

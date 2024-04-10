@@ -3,6 +3,7 @@
 #include "nfc04a1_nfctag.h"
 #include "../E-Paper-Display/epd_w21.h"
 #include <stdio.h>
+#include "display.h"
 
 uint8_t cnt = 0;
 uint16_t mblength;
@@ -10,6 +11,7 @@ ST25DV_MB_CTRL_DYN_STATUS mbctrldynstatus;
 ST25DV_EN_STATUS MB_mode;
 ST25DV_PASSWD passwd;
 ST25DV_I2CSSO_STATUS i2csso;
+
 volatile uint8_t GPOActivated = 0;
 
 void MX_NFC4_MAILBOX_Init(void);
@@ -88,11 +90,12 @@ void MX_NFC4_MAILBOX_Init(void)
 * @retval None
 */
 
-extern unsigned char nfcBuffer[];
+
 int bufferIndex = 0;
 
 void MX_NFC4_MAILBOX_Process(void)
-{
+{   
+    unsigned char nfcBuffer[5000];
     if (GPOActivated == 1)
     {
         /* Check if Mailbox is available */
@@ -131,17 +134,15 @@ void MX_NFC4_MAILBOX_Process(void)
 
             if (bufferIndex == 5000)
             {
+                EpdInitFull();
                 bufferIndex = 0;
-
-                EPD_1IN54_V2_Display(nfcBuffer);
-             
-                HAL_Delay(3000);
+                EpdDisFull((unsigned char *) nfcBuffer, 1);
+                HAL_Delay(1000);
             }
 
         }
 
         GPOActivated = 0;
-				HAL_GPIO_WritePin(GPIOA,GPIO_PIN_2,GPIO_PIN_RESET);
     }
 }
 

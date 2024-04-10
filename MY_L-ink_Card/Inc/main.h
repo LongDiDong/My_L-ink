@@ -79,7 +79,18 @@ void Error_Handler(void);
 #define INK_IS_BUSY_Pin GPIO_PIN_8
 #define INK_IS_BUSY_GPIO_Port GPIOA
 /* USER CODE BEGIN Private defines */
-
+#define MOSI_Pin INK_MOSI_Pin
+#define MOSI_GPIO_Port INK_MOSI_GPIO_Port
+#define CLK_Pin INK_CLK_Pin
+#define CLK_GPIO_Port INK_CLK_GPIO_Port
+#define SPI_CS_Pin INK_CS_Pin
+#define SPI_CS_GPIO_Port INK_CS_GPIO_Port
+#define DC_Pin INK_DC_Pin 
+#define DC_GPIO_Port INK_DC_GPIO_Port
+#define RST_Pin INK_RST_Pin
+#define RST_GPIO_Port INK_RST_GPIO_Port
+#define BUSY_Pin INK_IS_BUSY_Pin
+#define BUSY_GPIO_Port INK_IS_BUSY_GPIO_Port
 /* USER CODE END Private defines */
 
 #ifdef __cplusplus
