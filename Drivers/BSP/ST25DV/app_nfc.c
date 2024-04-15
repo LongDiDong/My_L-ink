@@ -139,16 +139,13 @@ void MX_NFC4_MAILBOX_Process(void)
                 bufferIndex = 0;
                 EpdDisFull((unsigned char *) nfcBuffer, 1);
 
+                //Copy nfc image to flash
                 for(uint8_t i = 0; i < 40; i++)
                 {
-                  
                     MY_DATAFLASH_Program((ADDR_FLASH_PAGE_470 + (128 * i)),&(nfcBuffer[128 * i]));
                 }
                 
-                HAL_GPIO_WritePin(GPIOA,GPIO_PIN_2,GPIO_PIN_SET);
-                HAL_Delay(10);
-                //LED
-                HAL_GPIO_WritePin(GPIOA,GPIO_PIN_2,GPIO_PIN_RESET); 
+                LED_DisPlay();
                
                 HAL_Delay(100);
             }

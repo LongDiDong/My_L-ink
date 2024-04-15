@@ -7,13 +7,6 @@
 
 #define ADDR_FLASH_PAGE_470      0X08000000 + 128*470   //开始
 
-#define ADDR_FLASH_PAGE_506      0X08000000 + 128*505   //
-#define ADDR_FLASH_PAGE_507      0X08000000 + 128*506   //
-#define ADDR_FLASH_PAGE_508      0X08000000 + 128*507   //
-#define ADDR_FLASH_PAGE_509      0X08000000 + 128*508   //
-#define ADDR_FLASH_PAGE_510      0X08000000 + 128*509   //
-#define ADDR_FLASH_PAGE_511      0X08000000 + 128*510   //
-#define ADDR_FLASH_PAGE_512      0X08000000 + 128*511   //最后一页
 
 void MY_DATAFLASH_Program(uint32_t Address, uint8_t *Data);   
 //读取指定地址的半字(16位数据)
