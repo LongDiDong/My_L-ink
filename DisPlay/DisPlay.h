@@ -14,6 +14,7 @@ extern uint8_t key_flag[3] ;
 void EPD_1IN54_test(void);
 void LED_DisPlay(void);
 void epd1in54_showbmp(const uint8_t *nfcBuffer);
+void epd1in54_showbmp_updown(const uint8_t *nfcBuffer);
 
 #endif
 

@@ -229,6 +229,42 @@ void EPD_1IN54_Init(void)
 
 }
 
+void EPD_1IN54_Init_updown(void)
+{
+    EPD_1IN54_Reset();
+    
+    EPD_1IN54_ReadBusy(); 
+    EPD_1IN54_SendCommand(0x12);  //½øȫ²ΊýŤփ
+    EPD_1IN54_ReadBusy();
+    
+    EPD_1IN54_SendCommand(0x01); //Set gate driver    
+    EPD_1IN54_SendData(0xC7);  /* 0xc7Ϊ200¡Á200  ɨփͼϱ´󐡠*/
+    EPD_1IN54_SendData(0x00);  
+    EPD_1IN54_SendData(0x00); //0x01 0x11Ϊս£¬Ƥ˻Ϊ·´ //ɨփͼƬ¸øɏςµߵ¹
+    
+    EPD_1IN54_SendCommand(0x11); //data entry mode
+    EPD_1IN54_SendData(0x01);
+//    EPD_1IN54_SendData(0x00); // GD = 0; SM = 0; TB = 0;
+    EPD_1IN54_SetWindow(0, EPD_1IN54_HEIGHT-1, EPD_1IN54_WIDTH-1, 0);
+    
+    EPD_1IN54_SendCommand(0x3C); //ɨփ±߿򑕉«
+    EPD_1IN54_SendData(0x01);  //0x01 °׉«
+
+    EPD_1IN54_SendCommand(0x18); //΂¶ȼ첢
+    EPD_1IN54_SendData(0x80);  //Ě²¿΂¶ȴ«¸І÷¼첢
+
+    EPD_1IN54_SendCommand(0x22); // //Load Temperature and waveform setting.
+    EPD_1IN54_SendData(0Xb1);
+    EPD_1IN54_SendCommand(0x20);
+
+    EPD_1IN54_SetCursor(0, EPD_1IN54_HEIGHT-1);
+    EPD_1IN54_ReadBusy();
+
+    EPD_1IN54_SetLut(EPD_1IN54_lut_full_update);
+//    EPD_1IN54_SetLut(EPD_1IN54_lut_full_update2);
+
+}
+
 void EPD_1IN54_Init_Partial(void)
 {
 	EPD_1IN54_Reset();

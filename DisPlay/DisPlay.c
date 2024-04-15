@@ -36,6 +36,37 @@ void epd1in54_showbmp(const uint8_t *nfcBuffer)
     // close 5V
     DEV_Module_Exit();
 }
+void epd1in54_showbmp_updown(const uint8_t *nfcBuffer)
+{     
+    DEV_Module_Init();
+    EPD_1IN54_Init_updown();
+    EPD_1IN54_Clear();  
+    
+    DEV_Delay_ms(500);	    
+    UBYTE *BlackImage1;
+    UWORD Imagesize = ((EPD_1IN54_WIDTH % 8 == 0)? (EPD_1IN54_WIDTH / 8 ): (EPD_1IN54_WIDTH / 8 + 1)) * EPD_1IN54_HEIGHT;
+    if((BlackImage1 = (UBYTE *)malloc(Imagesize)) == NULL) 
+        {
+        return ;
+        }
+    Paint_NewImage(BlackImage1, EPD_1IN54_WIDTH, EPD_1IN54_HEIGHT, 90,    WHITE);
+//                  ͼƬָի          ¿񲀠            ¸߶Ƞ    нת½ǶȠ ̮³䑕ɫ
+    Paint_SelectImage(BlackImage1);
+    Paint_Clear(WHITE);
+    
+    Paint_DrawBitMap(nfcBuffer);
+        
+
+    EPD_1IN54_Image_Display(BlackImage1);
+    DEV_Delay_ms(500);
+         
+    EPD_1IN54_Sleep();
+    free(BlackImage1);
+    BlackImage1 = NULL;
+    // close 5V
+    DEV_Module_Exit();
+}
+
 
 void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin)
 {

@@ -4,7 +4,7 @@
 #include "../E-Paper-Display/epd_w21.h"
 #include <stdio.h>
 #include "display.h"
-
+#include "flash.h"
 uint8_t cnt = 0;
 uint16_t mblength;
 ST25DV_MB_CTRL_DYN_STATUS mbctrldynstatus;
@@ -71,7 +71,7 @@ void MX_NFC4_MAILBOX_Init(void)
 
     /* Enable Mailbox in dynamique register */
     NFC04A1_NFCTAG_SetMBEN_Dyn(NFC04A1_NFCTAG_INSTANCE);
-    printf("\n\r\n\rMailbox is activated");
+    //printf("\n\r\n\rMailbox is activated");
 
     /* Set EXTI settings for GPO Interrupt */
     NFC04A1_GPO_Init();
@@ -96,6 +96,7 @@ int bufferIndex = 0;
 void MX_NFC4_MAILBOX_Process(void)
 {   
     unsigned char nfcBuffer[5000];
+//    uint32_t temp_nfcBuffer = 0;
     if (GPOActivated == 1)
     {
         /* Check if Mailbox is available */
@@ -137,7 +138,19 @@ void MX_NFC4_MAILBOX_Process(void)
                 EpdInitFull();
                 bufferIndex = 0;
                 EpdDisFull((unsigned char *) nfcBuffer, 1);
-                HAL_Delay(1000);
+
+                for(uint8_t i = 0; i < 40; i++)
+                {
+                  
+                    MY_DATAFLASH_Program((ADDR_FLASH_PAGE_470 + (128 * i)),&(nfcBuffer[128 * i]));
+                }
+                
+                HAL_GPIO_WritePin(GPIOA,GPIO_PIN_2,GPIO_PIN_SET);
+                HAL_Delay(10);
+                //LED
+                HAL_GPIO_WritePin(GPIOA,GPIO_PIN_2,GPIO_PIN_RESET); 
+               
+                HAL_Delay(100);
             }
 
         }

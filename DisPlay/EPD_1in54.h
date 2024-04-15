@@ -9,6 +9,7 @@
 
 
 void EPD_1IN54_Init(void);
+void EPD_1IN54_Init_updown(void);
 void EPD_1IN54_Init_Partial(void);
 void EPD_1IN54_Clear(void);
 void EPD_1IN54_Display(UBYTE *Image);
